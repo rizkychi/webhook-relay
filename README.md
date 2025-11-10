@@ -64,28 +64,21 @@ A lightweight, secure webhook forwarding service that receives HTTP POST request
 ## 📦 Installation
 
 ### Clone Repository
-
+```
 git clone https://github.com/yourusername/webhook-relay.git
 cd webhook-relay
-
- 
-
+```
 ### Install Dependencies
-
+```
 npm install
-
- 
-
+```
 ### Environment Setup
-
 Copy the example environment file:
-
+```
 cp .env.example .env
-
- 
-
+```
 Edit `.env` with your credentials:
-
+```
 PORT=3000
 
 Security - REQUIRED
@@ -101,8 +94,7 @@ DISCORD_WEBHOOK_URL=https://discord.com/api/webhooks/...
 Telegram (Optional)
 TELEGRAM_BOT_TOKEN=your-telegram-bot-token
 TELEGRAM_CHAT_ID=your-chat-id
-
- 
+```
 
 ---
 
@@ -171,34 +163,31 @@ In the **Bot** section:
 ## 🚀 Usage
 
 ### Starting the Server
-
+```
 npm start
-
- 
-
+```
 Expected output:
+```txt
 [SUCCESS] Server running on port 3000
 [INFO] Auth: Enabled ✓
 [INFO] Discord Bot: Enabled ✓
 [INFO] Discord Webhook: Enabled ✓
 [INFO] Telegram: Enabled ✓
 [SUCCESS] Discord bot logged in as YourBot#1234
-
- 
+```
 
 ### API Examples
 
 #### Basic Message
-
+```
 curl -X POST http://localhost:3000/send
 -H "Content-Type: application/json"
 -H "X-API-Key: your-secret-api-key"
 -d '{"message": "Hello from webhook-relay!"}'
-
- 
+```
 
 #### Custom Username (Webhook only)
-
+```
 curl -X POST http://localhost:3000/send
 -H "Content-Type: application/json"
 -H "X-API-Key: your-api-key"
@@ -206,11 +195,10 @@ curl -X POST http://localhost:3000/send
 "message": "Server deployment completed!",
 "username": "CI/CD Bot"
 }'
-
- 
+```
 
 #### Send to Discord + Telegram
-
+```
 curl -X POST http://localhost:3000/send
 -H "Content-Type: application/json"
 -H "X-API-Key: your-api-key"
@@ -218,11 +206,10 @@ curl -X POST http://localhost:3000/send
 "message": "⚠️ Critical alert: High CPU usage detected",
 "send_telegram": true
 }'
-
- 
+```
 
 #### Force Webhook Method
-
+```
 curl -X POST http://localhost:3000/send
 -H "Content-Type: application/json"
 -H "X-API-Key: your-api-key"
@@ -231,11 +218,10 @@ curl -X POST http://localhost:3000/send
 "use_bot": false,
 "username": "Webhook Logger"
 }'
-
- 
+```
 
 #### Using Node.js
-
+```javascript
 const axios = require('axios');
 
 async function sendNotification(message, critical = false) {
@@ -262,16 +248,15 @@ console.error('✗ Failed:', error.response?.data || error.message);
 // Usage
 sendNotification('App started successfully');
 sendNotification('🚨 Database connection lost!', true);
-
- 
+```
 
 #### Health Check
-
+```
 curl http://localhost:3000/
-
- 
+```
 
 Response:
+```json
 {
 "status": "running",
 "auth": true,
@@ -282,8 +267,7 @@ Response:
 "telegram": true,
 "timestamp": "2025-11-10T07:00:00.000Z"
 }
-
- 
+```
 
 ---
 
@@ -292,14 +276,13 @@ Response:
 ### Deploy to Coolify
 
 #### 1. Push to GitHub
-
+```
 git init
 git add .
 git commit -m "Initial commit"
 git remote add origin https://github.com/yourusername/webhook-relay.git
 git push -u origin main
-
- 
+```
 
 #### 2. Configure Coolify
 
@@ -311,7 +294,7 @@ git push -u origin main
 #### 3. Set Environment Variables
 
 Add in Coolify environment settings:
-
+```
 API_KEY=generate-strong-random-key-here
 DISCORD_BOT_TOKEN=your-bot-token
 DISCORD_CHANNEL_ID=123456789012345678
@@ -319,8 +302,7 @@ DISCORD_WEBHOOK_URL=https://discord.com/api/webhooks/...
 TELEGRAM_BOT_TOKEN=1234567890:ABCdefGHIjklMNOpqrsTUVwxyz
 TELEGRAM_CHAT_ID=987654321
 PORT=3000
-
- 
+```
 
 #### 4. Deploy
 
@@ -329,12 +311,11 @@ Click **Deploy** → Wait for build completion
 Your webhook-relay will be accessible at:
 https://your-app.coolify.domain/
 
- 
 
 ### Docker Deployment
 
 Create `Dockerfile`:
-
+```
 FROM node:18-alpine
 
 WORKDIR /app
@@ -347,11 +328,10 @@ COPY . .
 EXPOSE 3000
 
 CMD ["npm", "start"]
-
- 
+```
 
 Build and run:
-
+```
 docker build -t webhook-relay .
 
 docker run -d
@@ -361,8 +341,7 @@ docker run -d
 -e DISCORD_CHANNEL_ID=your-channel-id
 --name webhook-relay
 webhook-relay
-
- 
+```
 
 ---
 
@@ -375,6 +354,7 @@ webhook-relay
 Health check endpoint (no authentication required)
 
 **Response:**
+```json
 {
 "status": "running",
 "auth": true,
@@ -385,8 +365,7 @@ Health check endpoint (no authentication required)
 "telegram": true,
 "timestamp": "2025-11-10T07:00:00.000Z"
 }
-
- 
+```
 
 #### `POST /send`
 
@@ -406,6 +385,7 @@ Send message to Discord and/or Telegram (requires authentication)
 | `use_bot` | boolean | No | true | Use Discord bot (false = webhook only) |
 
 **Success Response (200):**
+```
 {
 "success": true,
 "results": {
@@ -419,8 +399,7 @@ Send message to Discord and/or Telegram (requires authentication)
 },
 "timestamp": "2025-11-10T07:00:00.000Z"
 }
-
- 
+```
 
 **Error Responses:**
 
@@ -453,9 +432,9 @@ Send message to Discord and/or Telegram (requires authentication)
 
 1. **Generate Strong Keys**
 Use openssl to generate secure key
+```
 openssl rand -hex 32
-
- 
+```
 
 2. **Never Commit Keys**
 - Add `.env` to `.gitignore`
@@ -540,15 +519,15 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📞 Support
 
-- 🐛 [Report Bug](https://github.com/yourusername/webhook-relay/issues)
-- 💡 [Request Feature](https://github.com/yourusername/webhook-relay/issues)
-- 📧 [Email Support](mailto:your.email@example.com)
+- 🐛 [Report Bug](https://github.com/rizkychi/webhook-relay/issues)
+- 💡 [Request Feature](https://github.com/rizkychi/webhook-relay/issues)
+- 📧 [Email Support](mailto:rizkynhae@gmail.com)
 
 ---
 
 <div align="center">
 
-Made with ❤️ by [Your Name](https://github.com/yourusername)
+Made with ❤️ by [Rizkychi](https://github.com/rizkychi)
 
 ⭐ Star this repo if you find it useful!
 
