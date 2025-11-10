@@ -30,25 +30,25 @@ A lightweight, secure webhook forwarding service that receives HTTP POST request
 
 ## 📋 Table of Contents
 
-- [Features](#features)
-- [Prerequisites](#prerequisites)
-- [Installation](#installation)
-- [Configuration](#configuration)
+- [Features](#-features)
+- [Prerequisites](#-prerequisites)
+- [Installation](#-installation)
+- [Configuration](#-configuration)
   - [Discord Bot Setup](#discord-bot-setup)
   - [Discord Webhook Setup](#discord-webhook-setup)
   - [Telegram Setup](#telegram-setup-optional)
-- [Usage](#usage)
+- [Usage](#-usage)
   - [Starting the Server](#starting-the-server)
   - [API Examples](#api-examples)
-- [Deployment](#deployment)
+- [Deployment](#-deployment)
   - [Deploy to Coolify](#deploy-to-coolify)
   - [Docker Deployment](#docker-deployment)
-- [API Reference](#api-reference)
-- [Bot vs Webhook](#bot-vs-webhook)
-- [Security](#security)
-- [Troubleshooting](#troubleshooting)
-- [Contributing](#contributing)
-- [License](#license)
+- [API Reference](#-api-reference)
+- [Bot vs Webhook](#-bot-vs-webhook)
+- [Security](#-security)
+- [Troubleshooting](#-troubleshooting)
+- [Contributing](#-contributing)
+- [License](#-license)
 
 ---
 
@@ -64,20 +64,28 @@ A lightweight, secure webhook forwarding service that receives HTTP POST request
 ## 📦 Installation
 
 ### Clone Repository
+
 ```
 git clone https://github.com/yourusername/webhook-relay.git
 cd webhook-relay
 ```
+
 ### Install Dependencies
+
 ```
 npm install
 ```
+
 ### Environment Setup
+
 Copy the example environment file:
+
 ```
 cp .env.example .env
 ```
+
 Edit `.env` with your credentials:
+
 ```
 PORT=3000
 
@@ -112,6 +120,7 @@ TELEGRAM_CHAT_ID=your-chat-id
 #### 2. Enable Intents
 
 In the **Bot** section:
+
 - Enable **MESSAGE CONTENT INTENT**
 - Enable **SERVER MEMBERS INTENT** (optional)
 
@@ -149,10 +158,12 @@ In the **Bot** section:
 #### 2. Get Chat ID
 
 **For Private Chat:**
+
 1. Message [@userinfobot](https://t.me/userinfobot)
 2. Copy your **User ID** (save as `TELEGRAM_CHAT_ID`)
 
 **For Group/Channel:**
+
 1. Add bot to group/channel
 2. Send a message in the group
 3. Visit: `https://api.telegram.org/bot<YOUR_BOT_TOKEN>/getUpdates`
@@ -163,10 +174,13 @@ In the **Bot** section:
 ## 🚀 Usage
 
 ### Starting the Server
+
 ```
 npm start
 ```
+
 Expected output:
+
 ```txt
 [SUCCESS] Server running on port 3000
 [INFO] Auth: Enabled ✓
@@ -179,6 +193,7 @@ Expected output:
 ### API Examples
 
 #### Basic Message
+
 ```
 curl -X POST http://localhost:3000/send
 -H "Content-Type: application/json"
@@ -187,6 +202,7 @@ curl -X POST http://localhost:3000/send
 ```
 
 #### Custom Username (Webhook only)
+
 ```
 curl -X POST http://localhost:3000/send
 -H "Content-Type: application/json"
@@ -198,74 +214,82 @@ curl -X POST http://localhost:3000/send
 ```
 
 #### Send to Discord + Telegram
+
 ```
 curl -X POST http://localhost:3000/send
 -H "Content-Type: application/json"
 -H "X-API-Key: your-api-key"
 -d '{
-"message": "⚠️ Critical alert: High CPU usage detected",
-"send_telegram": true
+  "message": "⚠️ Critical alert: High CPU usage detected",
+  "send_telegram": true
 }'
 ```
 
 #### Force Webhook Method
+
 ```
 curl -X POST http://localhost:3000/send
 -H "Content-Type: application/json"
 -H "X-API-Key: your-api-key"
 -d '{
-"message": "Using webhook instead of bot",
-"use_bot": false,
-"username": "Webhook Logger"
+  "message": "Using webhook instead of bot",
+  "use_bot": false,
+  "username": "Webhook Logger"
 }'
 ```
 
 #### Using Node.js
+
 ```javascript
-const axios = require('axios');
+const axios = require("axios");
 
 async function sendNotification(message, critical = false) {
-try {
-const response = await axios.post('http://localhost:3000/send', {
-message: message,
-username: 'App Logger',
-send_telegram: critical,
-use_bot: true
-}, {
-headers: {
-'X-API-Key': process.env.WEBHOOK_RELAY_KEY,
-'Content-Type': 'application/json'
-}
-});
+  try {
+    const response = await axios.post(
+      "http://localhost:3000/send",
+      {
+        message: message,
+        username: "App Logger",
+        send_telegram: critical,
+        use_bot: true,
+      },
+      {
+        headers: {
+          "X-API-Key": process.env.WEBHOOK_RELAY_KEY,
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
- 
-console.log('✓ Notification sent:', response.data);
-} catch (error) {
-console.error('✗ Failed:', error.response?.data || error.message);
-}
+    console.log("✓ Notification sent:", response.data);
+  } catch (error) {
+    console.error("✗ Failed:", error.response?.data || error.message);
+  }
 }
 
 // Usage
-sendNotification('App started successfully');
-sendNotification('🚨 Database connection lost!', true);
+sendNotification("App started successfully");
+sendNotification("🚨 Database connection lost!", true);
 ```
 
 #### Health Check
+
 ```
 curl http://localhost:3000/
 ```
 
 Response:
+
 ```json
 {
-"status": "running",
-"auth": true,
-"discord": {
-"bot": true,
-"webhook": true
-},
-"telegram": true,
-"timestamp": "2025-11-10T07:00:00.000Z"
+  "status": "running",
+  "auth": true,
+  "discord": {
+    "bot": true,
+    "webhook": true
+  },
+  "telegram": true,
+  "timestamp": "2025-11-10T07:00:00.000Z"
 }
 ```
 
@@ -276,6 +300,7 @@ Response:
 ### Deploy to Coolify
 
 #### 1. Push to GitHub
+
 ```
 git init
 git add .
@@ -294,6 +319,7 @@ git push -u origin main
 #### 3. Set Environment Variables
 
 Add in Coolify environment settings:
+
 ```
 API_KEY=generate-strong-random-key-here
 DISCORD_BOT_TOKEN=your-bot-token
@@ -311,10 +337,10 @@ Click **Deploy** → Wait for build completion
 Your webhook-relay will be accessible at:
 https://your-app.coolify.domain/
 
-
 ### Docker Deployment
 
 Create `Dockerfile`:
+
 ```
 FROM node:18-alpine
 
@@ -331,6 +357,7 @@ CMD ["npm", "start"]
 ```
 
 Build and run:
+
 ```
 docker build -t webhook-relay .
 
@@ -354,16 +381,17 @@ webhook-relay
 Health check endpoint (no authentication required)
 
 **Response:**
+
 ```json
 {
-"status": "running",
-"auth": true,
-"discord": {
-"bot": true,
-"webhook": true
-},
-"telegram": true,
-"timestamp": "2025-11-10T07:00:00.000Z"
+  "status": "running",
+  "auth": true,
+  "discord": {
+    "bot": true,
+    "webhook": true
+  },
+  "telegram": true,
+  "timestamp": "2025-11-10T07:00:00.000Z"
 }
 ```
 
@@ -372,19 +400,21 @@ Health check endpoint (no authentication required)
 Send message to Discord and/or Telegram (requires authentication)
 
 **Headers:**
+
 - `X-API-Key: <your-api-key>` (required)
 - `Content-Type: application/json` (required)
 
 **Body Parameters:**
 
-| Parameter | Type | Required | Default | Description |
-|-----------|------|----------|---------|-------------|
-| `message` | string | Yes | - | Message content to send |
-| `username` | string | No | "Logger Bot" | Custom username (webhook only) |
-| `send_telegram` | boolean | No | false | Also send to Telegram |
-| `use_bot` | boolean | No | true | Use Discord bot (false = webhook only) |
+| Parameter       | Type    | Required | Default      | Description                            |
+| --------------- | ------- | -------- | ------------ | -------------------------------------- |
+| `message`       | string  | Yes      | -            | Message content to send                |
+| `username`      | string  | No       | "Logger Bot" | Custom username (webhook only)         |
+| `send_telegram` | boolean | No       | false        | Also send to Telegram                  |
+| `use_bot`       | boolean | No       | true         | Use Discord bot (false = webhook only) |
 
 **Success Response (200):**
+
 ```
 {
 "success": true,
@@ -412,15 +442,15 @@ Send message to Discord and/or Telegram (requires authentication)
 
 ## 🤖 Bot vs Webhook
 
-| Feature | Discord Bot | Discord Webhook |
-|---------|-------------|-----------------|
-| **Setup** | Complex (token + invite) | Simple (copy URL) |
-| **Auth** | Bot token required | URL is secret |
-| **Multi-channel** | ✅ Yes | ❌ One channel only |
-| **Username** | Fixed bot name | ✅ Custom per message |
-| **Rate Limit** | 50 req/sec | 5 req/2sec |
-| **Reliability** | WebSocket connection | HTTP only |
-| **Recommended** | ✅ Primary method | Fallback/Simple use |
+| Feature           | Discord Bot              | Discord Webhook       |
+| ----------------- | ------------------------ | --------------------- |
+| **Setup**         | Complex (token + invite) | Simple (copy URL)     |
+| **Auth**          | Bot token required       | URL is secret         |
+| **Multi-channel** | ✅ Yes                   | ❌ One channel only   |
+| **Username**      | Fixed bot name           | ✅ Custom per message |
+| **Rate Limit**    | 50 req/sec               | 5 req/2sec            |
+| **Reliability**   | WebSocket connection     | HTTP only             |
+| **Recommended**   | ✅ Primary method        | Fallback/Simple use   |
 
 **Recommendation:** Use bot as primary with webhook as fallback for maximum reliability.
 
@@ -431,17 +461,20 @@ Send message to Discord and/or Telegram (requires authentication)
 ### API Key Best Practices
 
 1. **Generate Strong Keys**
-Use openssl to generate secure key
+   Use openssl to generate secure key
+
 ```
 openssl rand -hex 32
 ```
 
 2. **Never Commit Keys**
+
 - Add `.env` to `.gitignore`
 - Use environment variables in production
 - Rotate keys periodically
 
 3. **Authentication Methods**
+
 - `X-API-Key` header (recommended)
 - `Authorization: Bearer <key>` header
 
@@ -461,6 +494,7 @@ openssl rand -hex 32
 **Problem:** Bot is online but not sending messages
 
 **Solutions:**
+
 1. Check `DISCORD_CHANNEL_ID` is correct
 2. Verify bot has "Send Messages" permission in channel
 3. Check console for error messages
@@ -476,7 +510,8 @@ openssl rand -hex 32
 
 **Problem:** `403 Invalid API key` error
 
-**Solution:** 
+**Solution:**
+
 1. Check API key matches exactly (no extra spaces)
 2. Verify environment variable is loaded: check `/` endpoint
 
@@ -485,6 +520,7 @@ openssl rand -hex 32
 **Problem:** Messages not reaching Telegram
 
 **Solutions:**
+
 1. Verify bot token with `https://api.telegram.org/bot<TOKEN>/getMe`
 2. Check chat ID is correct (try negative ID for groups: `-123456789`)
 3. Ensure bot is member of group/channel
