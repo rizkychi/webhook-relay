@@ -181,7 +181,7 @@ npm start
 
 Expected output:
 
-```txt
+```
 [SUCCESS] Server running on port 3000
 [INFO] Auth: Enabled ✓
 [INFO] Discord Bot: Enabled ✓
@@ -208,8 +208,8 @@ curl -X POST http://localhost:3000/send
 -H "Content-Type: application/json"
 -H "X-API-Key: your-api-key"
 -d '{
-"message": "Server deployment completed!",
-"username": "CI/CD Bot"
+  "message": "Server deployment completed!",
+  "username": "CI/CD Bot"
 }'
 ```
 
@@ -415,19 +415,19 @@ Send message to Discord and/or Telegram (requires authentication)
 
 **Success Response (200):**
 
-```
+```json
 {
-"success": true,
-"results": {
-"discord": {
-"success": true,
-"method": "bot"
-},
-"telegram": {
-"success": true
-}
-},
-"timestamp": "2025-11-10T07:00:00.000Z"
+  "success": true,
+  "results": {
+    "discord": {
+      "success": true,
+      "method": "bot"
+    },
+    "telegram": {
+      "success": true
+    }
+  },
+  "timestamp": "2025-11-10T07:00:00.000Z"
 }
 ```
 
