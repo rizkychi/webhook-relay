@@ -1,6 +1,6 @@
 {
-  "name": "webhook-forwarder",
-  "version": "2.0.0",
+  "name": "webhook-relay",
+  "version": "2.1.0",
   "description": "Secure webhook forwarder to Discord and Telegram",
   "main": "index.js",
   "scripts": {
